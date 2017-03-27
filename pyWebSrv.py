@@ -24,7 +24,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         s.send_header("Content-type", "text/html")
         s.end_headers()
         s.wfile.write("<html><head><title>Pi Speed Test</title></head>")
-        s.wfile.write("<pre>%s</pre>" % doSpeedTest())
+        s.wfile.write('<pre><span class="inner-pre" style="font-size: 30px">%s</pre>' % doSpeedTest())
         s.wfile.write("</body></html>")
         
 if __name__ == '__main__':

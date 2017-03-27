@@ -5,3 +5,4 @@ sudo chmod 644 /lib/systemd/system/bandwidth-monitor.service
 sudo systemctl daemon-reload
 sudo systemctl enable bandwidth-monitor.service
 sudo systemctl start bandwidth-monitor.service
+tail /var/log/syslog
