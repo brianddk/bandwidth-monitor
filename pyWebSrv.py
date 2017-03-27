@@ -22,11 +22,19 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         """Respond to a GET request."""
         s.send_response(200)
         s.send_header("Content-type", "text/html")
-        s.end_headers()
-        s.wfile.write("<html><head><title>Pi Speed Test</title></head>")
-        s.wfile.write('<pre><span class="inner-pre" style="font-size: 30px">%s</pre>' % doSpeedTest())
+        if s.path == '/':
+            s.send_header("Refresh", "1; url=/speedtest")
+            s.end_headers()
+            s.wfile.write("<html><head><title>Pi Speed Test</title></head>")
+            msg = "Performing Speed Test...\nplease wait 30 seconds..."
+            s.wfile.write('<pre><span class="inner-pre" style="font-size: 30px">%s</pre>' % msg)
+        elif s.path == '/speedtest':
+            msg = doSpeedTest()
+            s.end_headers()
+            s.wfile.write("<html><head><title>Pi Speed Test Results</title></head>")
+            s.wfile.write('<pre><span class="inner-pre" style="font-size: 30px">%s</pre>' % msg)
         s.wfile.write("</body></html>")
-        
+
 if __name__ == '__main__':
     name = port = None
     if sys.argv[1:]:
