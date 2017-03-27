@@ -1,21 +1,46 @@
 import sys
+import os
+import time
 import BaseHTTPServer
-from SimpleHTTPServer import SimpleHTTPRequestHandler
 
+HOST_NAME = 'example.net' # !!!REMEMBER TO CHANGE THIS!!!
+PORT_NUMBER = 80 # Maybe set this to 9000.
 
-HandlerClass = SimpleHTTPRequestHandler
-ServerClass  = BaseHTTPServer.HTTPServer
-Protocol     = "HTTP/1.0"
+def doSpeedTest():
+    # run a speed test
+    result = os.popen("speedtest-cli --simple").read()
+    if 'Cannot' in result:
+        return "Try again later"
+    return result
 
-if sys.argv[1:]:
-    port = int(sys.argv[1])
-else:
-    port = 8000
-server_address = ('127.0.0.1', port)
-
-HandlerClass.protocol_version = Protocol
-httpd = ServerClass(server_address, HandlerClass)
-
-sa = httpd.socket.getsockname()
-print "Serving HTTP on", sa[0], "port", sa[1], "..."
-httpd.serve_forever()
+class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+    def do_HEAD(s):
+        s.send_response(200)
+        s.send_header("Content-type", "text/html")
+        s.end_headers()
+    def do_GET(s):
+        """Respond to a GET request."""
+        s.send_response(200)
+        s.send_header("Content-type", "text/html")
+        s.end_headers()
+        s.wfile.write("<html><head><title>Pi Speed Test</title></head>")
+        s.wfile.write("<pre>%s</pre>" % doSpeedTest())
+        s.wfile.write("</body></html>")
+        
+if __name__ == '__main__':
+    name = port = None
+    if sys.argv[1:]:
+        name = sys.argv[1]
+    if sys.argv[2:]:
+        port = int(sys.argv[2])
+    if not name: name = HOST_NAME
+    if not port: port = PORT_NUMBER
+    server_class = BaseHTTPServer.HTTPServer
+    httpd = server_class((name, port), MyHandler)
+    print time.asctime(), "Server Starts - %s:%s" % (name, port)
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    httpd.server_close()
+    print time.asctime(), "Server Stops - %s:%s" % (name, port)
