@@ -1,0 +1,16 @@
+[Unit]
+Description=Bandwidth Monitor
+After=multi-user.target
+ 
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/pi/src/bandwidth-monitor/pyWebSrv.py hostname 80
+Restart=on-abort
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=bandwidth-monitor
+User=root
+Group=root
+ 
+[Install]
+WantedBy=multi-user.target
