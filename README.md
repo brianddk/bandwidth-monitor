@@ -1,2 +1,2 @@
-# bandwith-monitor
+# bandwidth-monitor
 Small Bandwidth Monitor
