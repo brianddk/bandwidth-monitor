@@ -26,7 +26,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             s.send_header("Refresh", "1; url=/speedtest")
             s.end_headers()
             s.wfile.write("<html><head><title>Pi Speed Test</title></head>")
-            msg = "Performing Speed Test...\nplease wait 30 seconds..."
+            msg = "Performing Speed Test...\nPlease wait 30 seconds..."
             s.wfile.write('<pre><span class="inner-pre" style="font-size: 30px">%s</pre>' % msg)
         elif s.path == '/speedtest':
             msg = doSpeedTest()
