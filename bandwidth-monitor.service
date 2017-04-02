@@ -4,8 +4,9 @@ After=multi-user.target
  
 [Service]
 Type=simple
-ExecStart=/usr/bin/python /home/pi/src/bandwidth-monitor/pyWebSrv.py hostname 80
-Restart=on-abort
+ExecStart=/usr/bin/nice --20 /usr/bin/python /home/pi/src/bandwidth-monitor/pyWebSrv.py hostname 80
+Restart=always
+RestartSec=20
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=bandwidth-monitor
