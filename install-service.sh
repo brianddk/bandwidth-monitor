@@ -8,7 +8,7 @@ if [ "$(id -u)" != "0" ]; then
    echo "    'sudo $0'" 1>&2
    exit 1
 fi
-sed -e "s/hostname/$fqdnname/" $srvcname > $srvcpath/$srvcname
+sed -e "s/hostname/$fqdnname/;s#/home/pi#$HOME#" $srvcname > $srvcpath/$srvcname
 chmod 644 $srvcpath/$srvcname
 systemctl daemon-reload
 systemctl enable $srvcname
